@@ -1,0 +1,55 @@
+@model List<KUETResearchSociety.Models.Activity>
+@{
+    ViewData["Title"] = "Activities";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="admin-card">
+    <div class="admin-card-header d-flex justify-content-between align-items-center">
+        <h5 class="admin-card-title mb-0"><i class="bi bi-lightning-fill me-2"></i>Activities</h5>
+        <a asp-area="Admin" asp-controller="Activity" asp-action="Create" class="btn btn-primary btn-sm">
+            <i class="bi bi-plus-circle me-1"></i>Add Activity
+        </a>
+    </div>
+    <div class="admin-card-body p-0">
+        <div class="table-responsive">
+            <table class="table admin-table datatable mb-0">
+                <thead>
+                    <tr>
+                        <th>Image</th>
+                        <th>Title</th>
+                        <th>Description</th>
+                        <th>Created</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var a in Model)
+                    {
+                        <tr>
+                            <td>
+                                @if (!string.IsNullOrEmpty(a.Image))
+                                {
+                                    <img src="@a.Image" class="table-thumb" alt="@a.Title" />
+                                }
+                                else
+                                {
+                                    <div class="table-thumb-placeholder"><i class="bi bi-image"></i></div>
+                                }
+                            </td>
+                            <td class="fw-semibold" style="color:var(--admin-text)">@a.Title</td>
+                            <td class="text-truncate" style="max-width:250px">@a.Description</td>
+                            <td class="text-muted small">@a.CreatedAt.ToString("MMM dd, yyyy")</td>
+                            <td>
+                                <div class="action-btns">
+                                    <a asp-area="Admin" asp-controller="Activity" asp-action="Edit" asp-route-id="@a.Id" class="btn btn-xs btn-outline-warning"><i class="bi bi-pencil"></i></a>
+                                    <button class="btn btn-xs btn-outline-danger btn-delete" data-id="@a.Id" data-url="@Url.Action("Delete","Activity", new { area="Admin" })" data-name="@a.Title"><i class="bi bi-trash"></i></button>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

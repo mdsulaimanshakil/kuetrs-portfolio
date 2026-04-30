@@ -1,0 +1,71 @@
+@model List<KUETResearchSociety.Models.GalleryItem>
+@{
+    ViewData["Title"] = "Gallery";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<!-- Upload Form -->
+<div class="admin-card mb-4">
+    <div class="admin-card-header">
+        <h5 class="admin-card-title mb-0"><i class="bi bi-cloud-upload me-2"></i>Upload Images</h5>
+    </div>
+    <div class="admin-card-body">
+        <form asp-area="Admin" asp-controller="Gallery" asp-action="Upload" method="post" enctype="multipart/form-data">
+            @Html.AntiForgeryToken()
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <label class="form-label admin-label">Category</label>
+                    <input type="text" name="category" class="form-control admin-input" placeholder="e.g. Workshop, Seminar" />
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label admin-label">Title (for single upload)</label>
+                    <input type="text" name="title" class="form-control admin-input" placeholder="Optional image title" />
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label admin-label">Images *</label>
+                    <input type="file" name="images" class="form-control admin-input" accept="image/*" multiple required />
+                </div>
+            </div>
+            <div class="mt-3">
+                <button type="submit" class="btn btn-primary"><i class="bi bi-upload me-1"></i>Upload Images</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Gallery Grid -->
+<div class="admin-card">
+    <div class="admin-card-header d-flex justify-content-between align-items-center">
+        <h5 class="admin-card-title mb-0"><i class="bi bi-images me-2"></i>Gallery Images (@Model.Count)</h5>
+    </div>
+    <div class="admin-card-body">
+        @if (Model.Any())
+        {
+            <div class="admin-gallery-grid">
+                @foreach (var item in Model)
+                {
+                    <div class="admin-gallery-item">
+                        <img src="@item.ImagePath" alt="@item.Title" loading="lazy" />
+                        <div class="admin-gallery-overlay">
+                            <p class="gallery-item-title">@item.Title</p>
+                            @if (!string.IsNullOrEmpty(item.Category))
+                            {
+                                <span class="badge bg-primary mb-2">@item.Category</span>
+                            }
+                            <button class="btn btn-xs btn-danger btn-delete" data-id="@item.Id" data-url="@Url.Action("Delete","Gallery", new { area="Admin" })" data-name="@item.Title">
+                                <i class="bi bi-trash me-1"></i>Delete
+                            </button>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+        else
+        {
+            <div class="text-center text-muted py-5">
+                <i class="bi bi-images fs-1 d-block mb-2"></i>
+                No images yet. Upload some above!
+            </div>
+        }
+    </div>
+</div>

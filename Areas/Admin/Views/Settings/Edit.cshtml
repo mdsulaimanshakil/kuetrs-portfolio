@@ -1,0 +1,127 @@
+@model KUETResearchSociety.Models.SiteSettings
+@{
+    ViewData["Title"] = "Site Settings";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="admin-card">
+    <div class="admin-card-header">
+        <h5 class="admin-card-title mb-0"><i class="bi bi-gear-fill me-2"></i>Site Settings</h5>
+    </div>
+    <div class="admin-card-body">
+        <form asp-area="Admin" asp-controller="Settings" asp-action="Edit" method="post" enctype="multipart/form-data">
+            @Html.AntiForgeryToken()
+            <input type="hidden" asp-for="Id" />
+
+            <!-- Tabs Navigation -->
+            <ul class="nav nav-tabs admin-tabs mb-4" role="tablist">
+                <li class="nav-item"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tab-hero" type="button">Hero</button></li>
+                <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-about" type="button">About</button></li>
+                <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-contact" type="button">Contact</button></li>
+                <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-social" type="button">Social</button></li>
+                <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-branding" type="button">Branding</button></li>
+            </ul>
+
+            <div class="tab-content">
+                <!-- Hero Tab -->
+                <div class="tab-pane fade show active" id="tab-hero">
+                    <div class="row g-3">
+                        <div class="col-12">
+                            <label asp-for="SiteTitle" class="form-label admin-label">Site Title</label>
+                            <input asp-for="SiteTitle" class="form-control admin-input" />
+                        </div>
+                        <div class="col-12">
+                            <label asp-for="HeroTitle" class="form-label admin-label">Hero Title</label>
+                            <input asp-for="HeroTitle" class="form-control admin-input" />
+                        </div>
+                        <div class="col-12">
+                            <label asp-for="HeroSubtitle" class="form-label admin-label">Hero Subtitle</label>
+                            <input asp-for="HeroSubtitle" class="form-control admin-input" />
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="HeroButtonPrimary" class="form-label admin-label">Primary Button Text</label>
+                            <input asp-for="HeroButtonPrimary" class="form-control admin-input" />
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="HeroButtonSecondary" class="form-label admin-label">Secondary Button Text</label>
+                            <input asp-for="HeroButtonSecondary" class="form-control admin-input" />
+                        </div>
+                    </div>
+                </div>
+
+                <!-- About Tab -->
+                <div class="tab-pane fade" id="tab-about">
+                    <div class="row g-3">
+                        <div class="col-12">
+                            <label asp-for="AboutText" class="form-label admin-label">About Text</label>
+                            <textarea asp-for="AboutText" class="form-control admin-input" rows="6" placeholder="Separate paragraphs with new lines..."></textarea>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="VisionText" class="form-label admin-label">Vision</label>
+                            <textarea asp-for="VisionText" class="form-control admin-input" rows="4"></textarea>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="MissionText" class="form-label admin-label">Mission</label>
+                            <textarea asp-for="MissionText" class="form-control admin-input" rows="4"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contact Tab -->
+                <div class="tab-pane fade" id="tab-contact">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label asp-for="ContactEmail" class="form-label admin-label">Contact Email</label>
+                            <input asp-for="ContactEmail" type="email" class="form-control admin-input" />
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="Phone" class="form-label admin-label">Phone</label>
+                            <input asp-for="Phone" class="form-control admin-input" />
+                        </div>
+                        <div class="col-12">
+                            <label asp-for="Address" class="form-label admin-label">Address</label>
+                            <input asp-for="Address" class="form-control admin-input" />
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Social Tab -->
+                <div class="tab-pane fade" id="tab-social">
+                    <div class="row g-3">
+                        <div class="col-12">
+                            <label asp-for="FacebookLink" class="form-label admin-label"><i class="bi bi-facebook me-1"></i>Facebook URL</label>
+                            <input asp-for="FacebookLink" class="form-control admin-input" placeholder="https://facebook.com/kuetrs" />
+                        </div>
+                        <div class="col-12">
+                            <label asp-for="LinkedInLink" class="form-label admin-label"><i class="bi bi-linkedin me-1"></i>LinkedIn URL</label>
+                            <input asp-for="LinkedInLink" class="form-control admin-input" />
+                        </div>
+                        <div class="col-12">
+                            <label asp-for="YoutubeLink" class="form-label admin-label"><i class="bi bi-youtube me-1"></i>YouTube URL</label>
+                            <input asp-for="YoutubeLink" class="form-control admin-input" />
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Branding Tab -->
+                <div class="tab-pane fade" id="tab-branding">
+                    <div class="mb-3">
+                        <label class="form-label admin-label">Site Logo</label>
+                        @if (!string.IsNullOrEmpty(Model.LogoPath))
+                        {
+                            <div class="mb-2">
+                                <img src="@Model.LogoPath" alt="Logo" style="height:80px;background:#fff;padding:8px;border-radius:6px;" />
+                                <p class="text-muted small mt-1">Upload new to replace.</p>
+                            </div>
+                        }
+                        <input type="file" name="logoFile" class="form-control admin-input" accept="image/*" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-4">
+                <button type="submit" class="btn btn-primary btn-lg"><i class="bi bi-save me-1"></i>Save All Settings</button>
+            </div>
+        </form>
+    </div>
+</div>

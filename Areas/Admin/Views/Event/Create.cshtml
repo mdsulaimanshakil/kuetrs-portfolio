@@ -1,0 +1,54 @@
+@model KUETResearchSociety.Models.Event
+@{
+    ViewData["Title"] = "Add Event";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="admin-card">
+            <div class="admin-card-header">
+                <h5 class="admin-card-title mb-0"><i class="bi bi-calendar-plus me-2"></i>Add Event</h5>
+            </div>
+            <div class="admin-card-body">
+                <form asp-area="Admin" asp-controller="Event" asp-action="Create" method="post" enctype="multipart/form-data">
+                    @Html.AntiForgeryToken()
+                    <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+                    <div class="row g-3">
+                        <div class="col-12">
+                            <label asp-for="Title" class="form-label admin-label">Event Title *</label>
+                            <input asp-for="Title" class="form-control admin-input" placeholder="e.g. Annual Research Summit 2026" />
+                            <span asp-validation-for="Title" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="EventDate" class="form-label admin-label">Event Date *</label>
+                            <input asp-for="EventDate" type="datetime-local" class="form-control admin-input" />
+                            <span asp-validation-for="EventDate" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="Venue" class="form-label admin-label">Venue</label>
+                            <input asp-for="Venue" class="form-control admin-input" placeholder="e.g. KUET Auditorium" />
+                        </div>
+                        <div class="col-12">
+                            <label asp-for="Description" class="form-label admin-label">Description *</label>
+                            <textarea asp-for="Description" class="form-control admin-input" rows="4"></textarea>
+                            <span asp-validation-for="Description" class="text-danger small"></span>
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label admin-label">Banner Image</label>
+                            <input type="file" name="bannerFile" class="form-control admin-input" accept="image/*" />
+                        </div>
+                    </div>
+
+                    <div class="mt-4 d-flex gap-2">
+                        <button type="submit" class="btn btn-primary"><i class="bi bi-check-lg me-1"></i>Save Event</button>
+                        <a asp-area="Admin" asp-controller="Event" asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts { <partial name="_ValidationScriptsPartial" /> }

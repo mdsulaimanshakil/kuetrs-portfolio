@@ -1,0 +1,158 @@
+@model KUETResearchSociety.ViewModels.Admin.DashboardViewModel
+@{
+    ViewData["Title"] = "Dashboard";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<!-- Stat Cards -->
+<div class="row g-4 mb-4">
+    <div class="col-sm-6 col-xl-4">
+        <div class="stat-card">
+            <div class="stat-icon" style="background: rgba(100,255,218,0.1); color: #64ffda;">
+                <i class="bi bi-people-fill"></i>
+            </div>
+            <div class="stat-info">
+                <div class="stat-number">@Model.TotalTeamMembers</div>
+                <div class="stat-label">Team Members</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-xl-4">
+        <div class="stat-card">
+            <div class="stat-icon" style="background: rgba(139,92,246,0.1); color: #8b5cf6;">
+                <i class="bi bi-lightning-fill"></i>
+            </div>
+            <div class="stat-info">
+                <div class="stat-number">@Model.TotalActivities</div>
+                <div class="stat-label">Activities</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-xl-4">
+        <div class="stat-card">
+            <div class="stat-icon" style="background: rgba(59,130,246,0.1); color: #3b82f6;">
+                <i class="bi bi-calendar-event-fill"></i>
+            </div>
+            <div class="stat-info">
+                <div class="stat-number">@Model.TotalEvents</div>
+                <div class="stat-label">Events</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-xl-4">
+        <div class="stat-card">
+            <div class="stat-icon" style="background: rgba(245,158,11,0.1); color: #f59e0b;">
+                <i class="bi bi-images"></i>
+            </div>
+            <div class="stat-info">
+                <div class="stat-number">@Model.TotalGalleryItems</div>
+                <div class="stat-label">Gallery Images</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-xl-4">
+        <div class="stat-card">
+            <div class="stat-icon" style="background: rgba(239,68,68,0.1); color: #ef4444;">
+                <i class="bi bi-envelope-fill"></i>
+            </div>
+            <div class="stat-info">
+                <div class="stat-number">@Model.TotalMessages</div>
+                <div class="stat-label">Total Messages</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-xl-4">
+        <div class="stat-card">
+            <div class="stat-icon" style="background: rgba(16,185,129,0.1); color: #10b981;">
+                <i class="bi bi-envelope-exclamation-fill"></i>
+            </div>
+            <div class="stat-info">
+                <div class="stat-number">@Model.UnreadMessages</div>
+                <div class="stat-label">Unread Messages</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Quick Actions -->
+<div class="row g-4 mb-4">
+    <div class="col-12">
+        <div class="admin-card">
+            <div class="admin-card-header">
+                <h5 class="admin-card-title"><i class="bi bi-grid-fill me-2"></i>Quick Actions</h5>
+            </div>
+            <div class="admin-card-body">
+                <div class="d-flex flex-wrap gap-2">
+                    <a asp-area="Admin" asp-controller="Team" asp-action="Create" class="btn btn-outline-info btn-sm"><i class="bi bi-person-plus me-1"></i>Add Member</a>
+                    <a asp-area="Admin" asp-controller="Activity" asp-action="Create" class="btn btn-outline-primary btn-sm"><i class="bi bi-plus-circle me-1"></i>Add Activity</a>
+                    <a asp-area="Admin" asp-controller="Event" asp-action="Create" class="btn btn-outline-warning btn-sm"><i class="bi bi-calendar-plus me-1"></i>Add Event</a>
+                    <a asp-area="Admin" asp-controller="Gallery" asp-action="Index" class="btn btn-outline-success btn-sm"><i class="bi bi-cloud-upload me-1"></i>Upload Gallery</a>
+                    <a asp-area="Admin" asp-controller="Settings" asp-action="Edit" class="btn btn-outline-secondary btn-sm"><i class="bi bi-gear me-1"></i>Site Settings</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Recent Messages -->
+<div class="row g-4">
+    <div class="col-12">
+        <div class="admin-card">
+            <div class="admin-card-header d-flex justify-content-between align-items-center">
+                <h5 class="admin-card-title mb-0"><i class="bi bi-envelope me-2"></i>Recent Messages</h5>
+                <a asp-area="Admin" asp-controller="Messages" asp-action="Index" class="btn btn-sm btn-outline-primary">View All</a>
+            </div>
+            <div class="admin-card-body p-0">
+                @if (Model.RecentMessages.Any())
+                {
+                    <div class="table-responsive">
+                        <table class="table admin-table mb-0">
+                            <thead>
+                                <tr>
+                                    <th>From</th>
+                                    <th>Subject</th>
+                                    <th>Date</th>
+                                    <th>Status</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var msg in Model.RecentMessages)
+                                {
+                                    <tr class="@(!msg.IsRead ? "unread-row" : "")">
+                                        <td>
+                                            <div class="fw-semibold" style="color:var(--admin-text)">@msg.Name</div>
+                                            <div class="text-muted small">@msg.Email</div>
+                                        </td>
+                                        <td>@(msg.Subject ?? "(no subject)")</td>
+                                        <td class="text-muted small">@msg.CreatedAt.ToString("MMM dd, yyyy")</td>
+                                        <td>
+                                            @if (!msg.IsRead)
+                                            {
+                                                <span class="badge bg-danger">Unread</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="badge bg-secondary">Read</span>
+                                            }
+                                        </td>
+                                        <td>
+                                            <a asp-area="Admin" asp-controller="Messages" asp-action="View" asp-route-id="@msg.Id" class="btn btn-xs btn-outline-primary">View</a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+                else
+                {
+                    <div class="p-4 text-center text-muted">
+                        <i class="bi bi-inbox fs-1 d-block mb-2"></i>
+                        No messages yet.
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

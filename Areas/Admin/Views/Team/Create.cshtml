@@ -1,0 +1,99 @@
+@model KUETResearchSociety.Models.TeamMember
+@{
+    ViewData["Title"] = "Add Team Member";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="admin-card">
+            <div class="admin-card-header">
+                <h5 class="admin-card-title mb-0"><i class="bi bi-person-plus me-2"></i>Add Team Member</h5>
+            </div>
+            <div class="admin-card-body">
+                <form asp-area="Admin" asp-controller="Team" asp-action="Create" method="post" enctype="multipart/form-data">
+                    @Html.AntiForgeryToken()
+                    <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label asp-for="Name" class="form-label admin-label">Full Name *</label>
+                            <input asp-for="Name" class="form-control admin-input" placeholder="e.g. Shah Md Khalil Ullah" />
+                            <span asp-validation-for="Name" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="Designation" class="form-label admin-label">Designation *</label>
+                            <input asp-for="Designation" class="form-control admin-input" placeholder="e.g. President" />
+                            <span asp-validation-for="Designation" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="Department" class="form-label admin-label">Department</label>
+                            <input asp-for="Department" class="form-control admin-input" placeholder="e.g. CSE" />
+                        </div>
+                        <div class="col-md-3">
+                            <label asp-for="Batch" class="form-label admin-label">Batch</label>
+                            <input asp-for="Batch" class="form-control admin-input" placeholder="e.g. 20" />
+                        </div>
+                        <div class="col-md-3">
+                            <label asp-for="DisplayOrder" class="form-label admin-label">Display Order</label>
+                            <input asp-for="DisplayOrder" type="number" class="form-control admin-input" value="0" />
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="Facebook" class="form-label admin-label">Facebook URL</label>
+                            <input asp-for="Facebook" class="form-control admin-input" placeholder="https://facebook.com/..." />
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="LinkedIn" class="form-label admin-label">LinkedIn URL</label>
+                            <input asp-for="LinkedIn" class="form-control admin-input" placeholder="https://linkedin.com/in/..." />
+                        </div>
+                        <div class="col-12">
+                            <label asp-for="Bio" class="form-label admin-label">Bio (optional)</label>
+                            <textarea asp-for="Bio" class="form-control admin-input" rows="3" placeholder="Short bio..."></textarea>
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label admin-label">Profile Photo</label>
+                            <div class="upload-zone" id="upload-zone">
+                                <i class="bi bi-cloud-upload fs-2 d-block mb-2"></i>
+                                <p class="mb-1">Click to upload or drag & drop</p>
+                                <p class="text-muted small">JPG, PNG, WEBP (max 5MB)</p>
+                                <input type="file" name="photoFile" id="photoFile" accept="image/*" class="d-none" />
+                            </div>
+                            <div id="img-preview" class="mt-2" style="display:none;">
+                                <img id="preview-img" src="" alt="Preview" style="height:120px;border-radius:50%;border:2px solid #64ffda;" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-4 d-flex gap-2">
+                        <button type="submit" class="btn btn-primary"><i class="bi bi-check-lg me-1"></i>Save Member</button>
+                        <a asp-area="Admin" asp-controller="Team" asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+<script>
+const zone = document.getElementById('upload-zone');
+const input = document.getElementById('photoFile');
+zone.addEventListener('click', () => input.click());
+zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('drag-over'); });
+zone.addEventListener('dragleave', () => zone.classList.remove('drag-over'));
+zone.addEventListener('drop', e => {
+    e.preventDefault(); zone.classList.remove('drag-over');
+    if (e.dataTransfer.files[0]) { input.files = e.dataTransfer.files; showPreview(e.dataTransfer.files[0]); }
+});
+input.addEventListener('change', () => { if (input.files[0]) showPreview(input.files[0]); });
+function showPreview(file) {
+    const reader = new FileReader();
+    reader.onload = e => {
+        document.getElementById('preview-img').src = e.target.result;
+        document.getElementById('img-preview').style.display = 'block';
+    };
+    reader.readAsDataURL(file);
+}
+</script>
+<partial name="_ValidationScriptsPartial" />
+}

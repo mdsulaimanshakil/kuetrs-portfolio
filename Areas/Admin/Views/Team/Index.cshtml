@@ -1,0 +1,63 @@
+@model List<KUETResearchSociety.Models.TeamMember>
+@{
+    ViewData["Title"] = "Team Members";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="admin-card">
+    <div class="admin-card-header d-flex justify-content-between align-items-center">
+        <h5 class="admin-card-title mb-0"><i class="bi bi-people-fill me-2"></i>Team Members</h5>
+        <a asp-area="Admin" asp-controller="Team" asp-action="Create" class="btn btn-primary btn-sm">
+            <i class="bi bi-person-plus me-1"></i>Add Member
+        </a>
+    </div>
+    <div class="admin-card-body p-0">
+        <div class="table-responsive">
+            <table class="table admin-table datatable mb-0" id="teamTable">
+                <thead>
+                    <tr>
+                        <th>Photo</th>
+                        <th>Name</th>
+                        <th>Designation</th>
+                        <th>Department</th>
+                        <th>Batch</th>
+                        <th>Order</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var m in Model)
+                    {
+                        <tr>
+                            <td>
+                                @if (!string.IsNullOrEmpty(m.Photo))
+                                {
+                                    <img src="@m.Photo" alt="@m.Name" class="table-avatar" />
+                                }
+                                else
+                                {
+                                    <div class="table-avatar-placeholder"><i class="bi bi-person"></i></div>
+                                }
+                            </td>
+                            <td class="fw-semibold" style="color:var(--admin-text)">@m.Name</td>
+                            <td>@m.Designation</td>
+                            <td>@m.Department</td>
+                            <td>@m.Batch</td>
+                            <td>@m.DisplayOrder</td>
+                            <td>
+                                <div class="action-btns">
+                                    <a asp-area="Admin" asp-controller="Team" asp-action="Edit" asp-route-id="@m.Id" class="btn btn-xs btn-outline-warning">
+                                        <i class="bi bi-pencil"></i>
+                                    </a>
+                                    <button class="btn btn-xs btn-outline-danger btn-delete" data-id="@m.Id" data-url="@Url.Action("Delete","Team", new { area="Admin" })" data-name="@m.Name">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
