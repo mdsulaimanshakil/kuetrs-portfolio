@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // --- Mobile Menu Toggle ---
+    // ─── Mobile Menu Toggle ──────────────────────────────
     const hamburger = document.getElementById('hamburger');
     const navLinks = document.querySelector('.nav-links');
     const navItems = document.querySelectorAll('.nav-link');
@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- Dark/Light Mode Toggle ---
+    // ─── Dark / Light Mode Toggle ────────────────────────
     const themeToggle = document.getElementById('theme-toggle');
     const body = document.body;
 
@@ -31,10 +31,9 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- Active Link Highlighting on Scroll ---
-    const sections = document.querySelectorAll('.section, .hero');
-
-    const highlightActiveLink = () => {
+    // ─── Active Nav Link on Scroll ───────────────────────
+    const sections = document.querySelectorAll('section[id]');
+    function highlightActiveLink() {
         let current = '';
         sections.forEach(section => {
             if (window.scrollY >= section.offsetTop - 150) {
@@ -43,16 +42,16 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         navItems.forEach(item => {
             item.classList.remove('active');
-            if (item.getAttribute('href') === `#${current}`) {
+            const href = item.getAttribute('href');
+            if (href === `#${current}` || href === `/#${current}`) {
                 item.classList.add('active');
             }
         });
-    };
-
+    }
     window.addEventListener('scroll', highlightActiveLink, { passive: true });
     highlightActiveLink();
 
-    // --- Scroll Reveal Animations ---
+    // ─── Scroll Reveal Animations ────────────────────────
     const revealElements = document.querySelectorAll('.reveal');
     const revealObserver = new IntersectionObserver((entries, observer) => {
         entries.forEach(entry => {

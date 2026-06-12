@@ -1,0 +1,345 @@
+@model KUETResearchSociety.ViewModels.HomeViewModel
+@{
+    ViewData["Title"] = Model.Settings.SiteTitle;
+    ViewData["Description"] = "KUET Research Society — Innovating Through Research and Technology.";
+}
+
+<!-- Hero Section -->
+<section id="hero" class="hero">
+    <div class="hero-content container">
+        <h1>@Model.Settings.HeroTitle</h1>
+        <p>@Model.Settings.HeroSubtitle</p>
+        <div class="hero-buttons">
+            <a href="#contact" class="btn btn-primary">@Model.Settings.HeroButtonPrimary</a>
+            <a href="#about" class="btn btn-secondary">@Model.Settings.HeroButtonSecondary</a>
+        </div>
+    </div>
+</section>
+
+<!-- About Section -->
+<section id="about" class="section about reveal">
+    <div class="container">
+        <h2 class="section-title">About Us</h2>
+        <div class="about-grid">
+            <div class="about-info">
+                <h3>About KUET Research Society</h3>
+                @if (!string.IsNullOrEmpty(Model.Settings.AboutText))
+                {
+                    @foreach (var para in Model.Settings.AboutText.Split('\n', StringSplitOptions.RemoveEmptyEntries))
+                    {
+                        <p style="margin-top: 15px;">@para</p>
+                    }
+                }
+                else
+                {
+                    <p>The KUET Research Society is a student-driven organization dedicated to fostering a strong culture of research, innovation, and critical thinking among students of Khulna University of Engineering &amp; Technology (KUET).</p>
+                }
+            </div>
+            <div class="about-features">
+                @if (!string.IsNullOrEmpty(Model.Settings.VisionText))
+                {
+                    <div class="feature-card">
+                        <h4>Our Vision</h4>
+                        <p>@Model.Settings.VisionText</p>
+                    </div>
+                }
+                else
+                {
+                    <div class="feature-card">
+                        <h4>Innovation</h4>
+                        <p>Exploring cutting-edge technologies to solve modern challenges.</p>
+                    </div>
+                }
+                @if (!string.IsNullOrEmpty(Model.Settings.MissionText))
+                {
+                    <div class="feature-card">
+                        <h4>Our Mission</h4>
+                        <p>@Model.Settings.MissionText</p>
+                    </div>
+                }
+                else
+                {
+                    <div class="feature-card">
+                        <h4>Collaboration</h4>
+                        <p>Working together across disciplines to achieve breakthrough results.</p>
+                    </div>
+                }
+                <div class="feature-card">
+                    <h4>Publication</h4>
+                    <p>Assisting members in publishing their research in prestigious journals.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Activities Section -->
+<section id="activities" class="section activities reveal">
+    <div class="container">
+        <h2 class="section-title">Activities &amp; Projects</h2>
+        @if (Model.Activities.Any())
+        {
+            <div class="projects-grid">
+                @{int gradIdx = 1;}
+                @foreach (var activity in Model.Activities)
+                {
+                    <div class="project-card">
+                        @if (!string.IsNullOrEmpty(activity.Image))
+                        {
+                            <div class="card-image" style="background-image: url('@activity.Image'); background-size: cover; background-position: center;"></div>
+                        }
+                        else
+                        {
+                            <div class="card-image bg-gradient-@(((gradIdx - 1) % 3) + 1)"></div>
+                        }
+                        <div class="card-content">
+                            <h3>@activity.Title</h3>
+                            <p>@activity.Description</p>
+                            @if (!string.IsNullOrEmpty(activity.Details))
+                            {
+                                <a href="#" class="read-more" onclick="return false;" data-details="@activity.Details" data-title="@activity.Title">Read More &rarr;</a>
+                            }
+                        </div>
+                    </div>
+                    gradIdx++;
+                }
+            </div>
+        }
+        else
+        {
+            <p class="text-center" style="color:var(--text-paragraph)">No activities yet. Check back soon!</p>
+        }
+    </div>
+</section>
+
+<!-- Events Section -->
+@if (Model.UpcomingEvents.Any())
+{
+    <section id="events" class="section events reveal">
+        <div class="container">
+            <h2 class="section-title">Upcoming Events</h2>
+            <div class="events-grid">
+                @foreach (var ev in Model.UpcomingEvents)
+                {
+                    <div class="event-card">
+                        @if (!string.IsNullOrEmpty(ev.BannerImage))
+                        {
+                            <div class="event-banner" style="background-image: url('@ev.BannerImage'); background-size: cover; background-position: center;"></div>
+                        }
+                        <div class="event-body">
+                            <div class="event-date-badge">
+                                <span class="event-month">@ev.EventDate.ToString("MMM")</span>
+                                <span class="event-day">@ev.EventDate.Day</span>
+                            </div>
+                            <div class="event-info">
+                                <h3>@ev.Title</h3>
+                                <p>@ev.Description</p>
+                                @if (!string.IsNullOrEmpty(ev.Venue))
+                                {
+                                    <p class="event-venue"><i>📍 @ev.Venue</i></p>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </section>
+}
+
+<!-- Team Section -->
+<section id="team" class="section team reveal">
+    <div class="container">
+        <h2 class="section-title">Our Team</h2>
+        @if (Model.TeamMembers.Any())
+        {
+            <div class="team-grid">
+                @foreach (var member in Model.TeamMembers)
+                {
+                    <div class="team-card">
+                        @if (!string.IsNullOrEmpty(member.Photo))
+                        {
+                            <img src="@member.Photo" alt="@member.Name" class="avatar" style="object-fit:cover;" />
+                        }
+                        else
+                        {
+                            <div class="avatar placeholder-1" style="display:flex;align-items:center;justify-content:center;">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="rgba(100,255,218,0.5)" stroke-width="1.5"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                            </div>
+                        }
+                        <h3>@member.Name</h3>
+                        <p class="role">@member.Designation</p>
+                        @if (!string.IsNullOrEmpty(member.Department))
+                        {
+                            <p class="bio">@member.Department@(!string.IsNullOrEmpty(member.Batch) ? $", Batch {member.Batch}" : "")</p>
+                        }
+                        @if (!string.IsNullOrEmpty(member.Bio))
+                        {
+                            <p class="bio" style="margin-top:8px">@member.Bio</p>
+                        }
+                        <div class="team-social">
+                            @if (!string.IsNullOrEmpty(member.Facebook))
+                            {
+                                <a href="@member.Facebook" target="_blank" rel="noopener" aria-label="Facebook">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"></path></svg>
+                                </a>
+                            }
+                            @if (!string.IsNullOrEmpty(member.LinkedIn))
+                            {
+                                <a href="@member.LinkedIn" target="_blank" rel="noopener" aria-label="LinkedIn">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
+                                </a>
+                            }
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+        else
+        {
+            <p class="text-center" style="color:var(--text-paragraph)">Team members coming soon!</p>
+        }
+    </div>
+</section>
+
+<!-- Gallery Section -->
+@if (Model.GalleryItems.Any())
+{
+    <section id="gallery" class="section gallery reveal">
+        <div class="container">
+            <h2 class="section-title">Gallery</h2>
+            <div class="gallery-grid">
+                @foreach (var item in Model.GalleryItems)
+                {
+                    <div class="gallery-item" onclick="openLightbox('@item.ImagePath', '@item.Title')">
+                        <img src="@item.ImagePath" alt="@item.Title" loading="lazy" />
+                        <div class="gallery-overlay">
+                            <span>@item.Title</span>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </section>
+
+    <!-- Lightbox -->
+    <div id="lightbox" class="lightbox" onclick="closeLightbox()">
+        <div class="lightbox-content" onclick="event.stopPropagation()">
+            <button class="lightbox-close" onclick="closeLightbox()">&times;</button>
+            <img id="lightbox-img" src="" alt="" />
+            <p id="lightbox-caption"></p>
+        </div>
+    </div>
+}
+
+<!-- Contact Section -->
+<section id="contact" class="section contact reveal">
+    <div class="container">
+        <h2 class="section-title">Contact Us</h2>
+        <div class="contact-wrapper">
+            <div class="contact-info">
+                <h3>Get in Touch</h3>
+                <p>Interested in joining or collaborating with us? Reach out today, we'd love to hear from you.</p>
+                <ul class="contact-details">
+                    <li>📍 @Model.Settings.Address</li>
+                    <li>📧 @Model.Settings.ContactEmail</li>
+                    @if (!string.IsNullOrEmpty(Model.Settings.Phone))
+                    {
+                        <li>📞 @Model.Settings.Phone</li>
+                    }
+                </ul>
+            </div>
+            <form class="contact-form" id="contact-form">
+                @Html.AntiForgeryToken()
+                <input type="text" id="cf-name" placeholder="Your Name" required />
+                <input type="email" id="cf-email" placeholder="Your Email" required />
+                <input type="text" id="cf-subject" placeholder="Subject (optional)" />
+                <textarea id="cf-message" placeholder="Your Message" rows="5" required></textarea>
+                <button type="submit" class="btn btn-primary" id="cf-submit">Send Message</button>
+                <div id="cf-feedback" style="display:none;margin-top:10px;padding:12px;border-radius:4px;font-size:0.9rem;"></div>
+            </form>
+        </div>
+    </div>
+</section>
+
+<!-- Activity Details Modal -->
+<div id="activity-modal" class="modal-overlay" onclick="closeActivityModal()">
+    <div class="modal-box" onclick="event.stopPropagation()">
+        <button class="modal-close" onclick="closeActivityModal()">&times;</button>
+        <h3 id="modal-title"></h3>
+        <p id="modal-details"></p>
+    </div>
+</div>
+
+@section Scripts {
+<script>
+// Contact form AJAX submission
+document.getElementById('contact-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const btn = document.getElementById('cf-submit');
+    const feedback = document.getElementById('cf-feedback');
+    btn.disabled = true;
+    btn.textContent = 'Sending...';
+
+    const token = document.querySelector('input[name="__RequestVerificationToken"]').value;
+    const payload = {
+        name: document.getElementById('cf-name').value,
+        email: document.getElementById('cf-email').value,
+        subject: document.getElementById('cf-subject').value,
+        message: document.getElementById('cf-message').value
+    };
+
+    try {
+        const res = await fetch('/Home/Contact', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'RequestVerificationToken': token },
+            body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+        feedback.style.display = 'block';
+        if (data.success) {
+            feedback.style.background = 'rgba(100,255,218,0.1)';
+            feedback.style.border = '1px solid var(--accent-color)';
+            feedback.style.color = 'var(--accent-color)';
+            feedback.textContent = data.message;
+            e.target.reset();
+        } else {
+            feedback.style.background = 'rgba(255,100,100,0.1)';
+            feedback.style.border = '1px solid #ff6464';
+            feedback.style.color = '#ff6464';
+            feedback.textContent = data.message;
+        }
+    } catch {
+        feedback.style.display = 'block';
+        feedback.style.color = '#ff6464';
+        feedback.textContent = 'Something went wrong. Please try again.';
+    } finally {
+        btn.disabled = false;
+        btn.textContent = 'Send Message';
+    }
+});
+
+// Activity modal
+function openActivityModal(title, details) {
+    document.getElementById('modal-title').textContent = title;
+    document.getElementById('modal-details').textContent = details;
+    document.getElementById('activity-modal').classList.add('active');
+}
+function closeActivityModal() {
+    document.getElementById('activity-modal').classList.remove('active');
+}
+document.querySelectorAll('.read-more[data-details]').forEach(link => {
+    link.addEventListener('click', () => openActivityModal(link.dataset.title, link.dataset.details));
+});
+
+// Lightbox
+function openLightbox(src, title) {
+    document.getElementById('lightbox-img').src = src;
+    document.getElementById('lightbox-caption').textContent = title;
+    document.getElementById('lightbox').classList.add('active');
+}
+function closeLightbox() {
+    document.getElementById('lightbox').classList.remove('active');
+}
+</script>
+}

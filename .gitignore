@@ -1,0 +1,55 @@
+## ASP.NET Core / Visual Studio gitignore
+
+# Build outputs
+[Bb]in/
+[Oo]bj/
+
+# Visual Studio files
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Publish output
+publish/
+[Pp]ubish/
+
+# NuGet
+*.nupkg
+*.snupkg
+packages/
+!**/packages/repositories.config
+*.nuget.props
+*.nuget.targets
+
+# Roslyn cache files
+*.cosmetadata
+
+# Backup
+*.bak
+
+# .NET Core
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# ASP.NET Scaffolding
+ScaffoldingReadMe.txt
+
+# Secrets & config overrides (do NOT commit real connection strings)
+appsettings.Production.json
+secrets.json
+
+# Uploads directory (user content — don't commit uploads)
+wwwroot/uploads/**
+!wwwroot/uploads/**/.gitkeep
+
+# Logs
+*.log
+Logs/
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
